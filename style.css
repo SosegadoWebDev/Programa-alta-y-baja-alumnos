@@ -1,8 +1,8 @@
 .text-content-center {
     text-align: center;
 }
-input {
-    margin-bottom: 10px !important;
+small {
+    margin-bottom: 12px !important;
 }
 button {
     margin-bottom: 10px !important;

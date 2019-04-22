@@ -23,14 +23,18 @@
                     <div class="row">
                         <div class="col">
                             <input type="text" class="form-control" placeholder="Nombre" id="input-name">
-                            <input type="number" class="form-control" placeholder="DNI" id="input-dni">
+                            <small class="form-text text-muted">Tu nombre debe ser mayor a 3 letras y no debe incluir
+                                números</small>
+                            <input type="number" class="form-control" placeholder="DNI" id="input-dni" required>
+                            <small class="form-text text-muted">Tu DNI debe contener entre 7-8 números y sin puntos</small>
                         </div>
                         <!--<div class="col">
                             <input type="text" class="form-control" placeholder="Apellido">
                             <input type="email" class="form-control" placeholder="e-mail">
                         </div>-->
                     </div>
-                    <button type="button" class="btn btn-primary w-100" id="input-button1" disabled>Agregar alumno</button>
+                    <button type="button" class="btn btn-primary w-100" id="input-button1" disabled>Agregar
+                        alumno</button>
                     <!--<div class="row">
                         <div class="col">
                             <input type="text" class="form-control" placeholder="Nombre">
