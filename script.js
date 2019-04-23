@@ -1,6 +1,28 @@
 var inputName = document.querySelector("#input-name");
 var inputbutton1 = document.querySelector("#input-button1");
-
+//Función para mostrar los alumnos que ya existan en LocalStorage
+function mostrarStudent(student) {
+    if (JSON.parse(localStorage.getItem("studentInfo"))) {
+        for (var i = 0; i < JSON.parse(localStorage.getItem("studentInfo")).length; i++) {
+            var studentlist = document.querySelector("#student-list");
+            var studentDatos = document.createElement("li");
+            studentDatos.className = "list-group-item";
+            studentDatos.id = student[i].dni
+            var nombreApellido = document.createElement("h1");
+            nombreApellido.innerText = "Nombre: " + student[i].nombre //+ student.lastName
+            studentDatos.appendChild(nombreApellido)
+            var dni = document.createElement("h3");
+            dni.innerText = "DNI: " + student[i].dni
+            studentDatos.appendChild(dni)
+            //var email = document.createElement("p");
+            //email.innerText = "Correo electrónico: " + student.email
+            //studentDatos.appendChild(email)
+            studentlist.appendChild(studentDatos)
+        }
+    }
+}
+var studentNode = mostrarStudent(JSON.parse(localStorage.getItem("studentInfo")))
+console.log(studentNode)
 //Funcion para ingresar un input sin números ademas del uso de replace para eliminar espacios 
 //vacios en el value, sin esto la funciona no llegaba nunca al comportamiento deseado
 var numeros = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -59,13 +81,17 @@ document.querySelectorAll("input")[1].addEventListener("input", function activar
         inputbutton1.disabled = true
     }
 })
-
+//Evento de click en el boton
 inputbutton1.addEventListener("click", function () {
     var nameValue = document.querySelector("#input-name").value
     var dniValue = document.querySelector("#input-dni").value
-    array = [nameValue, dniValue]
+    studentObject = typeof JSON.parse(localStorage.getItem("studentInfo")) === typeof [] ? studentObject = JSON.parse(localStorage.getItem("studentInfo")) : studentObject = []
+    //gender = gender === "MASCULINO" ? gender = "Señor" : gender = "Señora";
+    //Guardar el array en LocalStorage
     function guardarEnLocalStorage(key, array) {
         if (Array.isArray(array)) {
+            array.push({nombre: nameValue, dni: dniValue})
+            //console.log(array)
             var listaStorage = JSON.stringify(array)
             //console.log("Lista en formato JSON :"+ listaStorage)
             localStorage.setItem(key, listaStorage)
@@ -73,8 +99,9 @@ inputbutton1.addEventListener("click", function () {
             return "No es un " + typeof [] + " array"
         }
     }
-    var guardarEnLocal = guardarEnLocalStorage("studentInfo", array)
+    var guardarEnLocal = guardarEnLocalStorage("studentInfo", studentObject)
     console.log(guardarEnLocal)
+    //Capturar el array desde LocalStorage
     function levantarStorage(key) {
         if (localStorage.getItem(key)) {
             var listaObtenida = JSON.parse(localStorage.getItem(key))
@@ -87,17 +114,19 @@ inputbutton1.addEventListener("click", function () {
     }
     var mostrarLocal = levantarStorage("studentInfo");
     console.log(mostrarLocal)
+    //Mostrar en el DOM los datos capturados desde LocalStorage
     function mostrarStudent(student) {
         var studentlist = document.querySelector("#student-list");
         var studentDatos = document.createElement("li");
         studentDatos.className = "list-group-item"
-        var idRandom = Math.floor(Math.random() * 500);
-        studentDatos.id = "student-number-" + idRandom
+        //var idRandom = Math.floor(Math.random() * 500);
+        //studentDatos.id = "student-number-" + idRandom
+        studentDatos.id = student.DNI
         var nombreApellido = document.createElement("h1");
-        nombreApellido.innerText = student[0] //+ student.lastName
+        nombreApellido.innerText = "Nombre: " + student[0].nombre //+ student.lastName
         studentDatos.appendChild(nombreApellido)
         var dni = document.createElement("h3");
-        dni.innerText = "DNI: " + student[1]
+        dni.innerText = "DNI: " + student[0].dni
         studentDatos.appendChild(dni)
         //var email = document.createElement("p");
         //email.innerText = "Correo electrónico: " + student.email
