@@ -1,5 +1,6 @@
 var inputName = document.querySelector("#input-name");
 var inputbutton1 = document.querySelector("#input-button1");
+var inputLastName = document.querySelector("#input-lastname");
 //Función para mostrar los alumnos que ya existan en LocalStorage
 function mostrarStudent(student) {
     if (JSON.parse(localStorage.getItem("studentInfo"))) {
@@ -40,7 +41,7 @@ var noNumberOnName = function noNumber(strInput, arrayComplete) {
 //Funcion para validar un input empezando por el requerimiento de un input con valor, es decir "no vacío" y 
 //ademas de que al ser un input NOMBRE no tenga números como valores, de tener numeros retorna false y se
 //activa la clase "is-invalid", en caso de devolver todo true activa la clase "is-valid" y se activa el button
-inputName.addEventListener("input", function validarInput(event) {
+inputName.addEventListener("input", function validarName(event) {
     if (inputName.value && !(noNumberOnName(inputName.value, numeros)) && inputName.value.length >= 4) {
         inputName.classList.add("is-valid")
         if (inputName.classList.contains("is-invalid")) {
@@ -53,9 +54,33 @@ inputName.addEventListener("input", function validarInput(event) {
         }
     }
 })
+//validar input LastName
+inputLastName.addEventListener("input", function validarLastName(event) {
+    if (inputLastName.value && !(noNumberOnName(inputLastName.value, numeros)) && inputLastName.value.length >= 4) {
+        inputLastName.classList.add("is-valid")
+        if (inputLastName.classList.contains("is-invalid")) {
+            inputLastName.classList.replace("is-invalid", "is-valid")
+        }
+    } else {
+        inputLastName.classList.add("is-invalid")
+        if (inputLastName.classList.contains("is-valid")) {
+            inputLastName.classList.replace("is-valid", "is-invalid")
+        }
+    }
+})
+//Funcion para validar dni duplicados
 var inputDni = document.querySelector("#input-dni");
+function dniDuplicado() {
+    for (var i = 0; i <= document.querySelectorAll("li").length - 1; i++) {
+        if (inputDni.value == document.querySelectorAll("li")[i].id) {
+            return false
+        }
+    }
+    return true
+}
+//validación de el input DNI
 inputDni.addEventListener("input", function validarDni() {
-    if (inputDni.value > 0 && inputDni.value.length >= 7 && inputDni.value.length <= 8) {
+    if (inputDni.value > 0 && inputDni.value.length >= 7 && inputDni.value.length <= 8 && dniDuplicado()) {
         inputDni.classList.add("is-valid")
         if (inputDni.classList.contains("is-invalid")) {
             inputDni.classList.replace("is-invalid", "is-valid")
@@ -67,15 +92,38 @@ inputDni.addEventListener("input", function validarDni() {
         }
     }
 })
+//Validación del input e-mail
+var inputPassword = document.querySelector("#input-password");
+inputPassword.addEventListener("input", function () {
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputPassword.value)) {
+        inputPassword.classList.add("is-valid")
+        if (inputPassword.classList.contains("is-invalid")) {
+            inputPassword.classList.replace("is-invalid", "is-valid")
+        }
+    } else {
+        inputPassword.classList.add("is-invalid")
+        if (inputPassword.classList.contains("is-valid")) {
+            inputPassword.classList.replace("is-valid", "is-invalid")
+        }
+    }
+})
+//Eventos que activan el boton en caso de que los inputs esten validados correctamente
 document.querySelectorAll("input")[0].addEventListener("input", function activarButton() {
-    if ((inputName.classList.contains("is-valid")) && (inputDni.classList.contains("is-valid"))) {
+    if ((inputName.classList.contains("is-valid")) && (inputDni.classList.contains("is-valid")) && (inputPassword.classList.contains("is-valid"))) {
         inputbutton1.disabled = false
     } else {
         inputbutton1.disabled = true
     }
 })
 document.querySelectorAll("input")[1].addEventListener("input", function activarButton() {
-    if ((inputName.classList.contains("is-valid")) && (inputDni.classList.contains("is-valid"))) {
+    if ((inputName.classList.contains("is-valid")) && (inputDni.classList.contains("is-valid")) && (inputPassword.classList.contains("is-valid"))) {
+        inputbutton1.disabled = false
+    } else {
+        inputbutton1.disabled = true
+    }
+})
+document.querySelectorAll("input")[3].addEventListener("input", function activarButton() {
+    if ((inputName.classList.contains("is-valid")) && (inputDni.classList.contains("is-valid")) && (inputPassword.classList.contains("is-valid"))) {
         inputbutton1.disabled = false
     } else {
         inputbutton1.disabled = true
@@ -85,15 +133,12 @@ document.querySelectorAll("input")[1].addEventListener("input", function activar
 inputbutton1.addEventListener("click", function () {
     var nameValue = document.querySelector("#input-name").value
     var dniValue = document.querySelector("#input-dni").value
-    studentObject = typeof JSON.parse(localStorage.getItem("studentInfo")) === typeof [] ? studentObject = JSON.parse(localStorage.getItem("studentInfo")) : studentObject = []
-    //gender = gender === "MASCULINO" ? gender = "Señor" : gender = "Señora";
+    studentObject = !(JSON.parse(localStorage.getItem("studentInfo"))) ? studentObject = [] : studentObject = JSON.parse(localStorage.getItem("studentInfo"))
     //Guardar el array en LocalStorage
     function guardarEnLocalStorage(key, array) {
         if (Array.isArray(array)) {
-            array.push({nombre: nameValue, dni: dniValue})
-            //console.log(array)
+            array.push({ nombre: nameValue, dni: dniValue })
             var listaStorage = JSON.stringify(array)
-            //console.log("Lista en formato JSON :"+ listaStorage)
             localStorage.setItem(key, listaStorage)
         } else {
             return "No es un " + typeof [] + " array"
@@ -105,7 +150,6 @@ inputbutton1.addEventListener("click", function () {
     function levantarStorage(key) {
         if (localStorage.getItem(key)) {
             var listaObtenida = JSON.parse(localStorage.getItem(key))
-            //console.log("Lista en formato JavaScript: ")
             return listaObtenida
         } else {
             console.log("El array " + key + " no existe!")
@@ -116,17 +160,16 @@ inputbutton1.addEventListener("click", function () {
     console.log(mostrarLocal)
     //Mostrar en el DOM los datos capturados desde LocalStorage
     function mostrarStudent(student) {
+        var objectLength = JSON.parse(localStorage.getItem("studentInfo")).length - 1
         var studentlist = document.querySelector("#student-list");
         var studentDatos = document.createElement("li");
         studentDatos.className = "list-group-item"
-        //var idRandom = Math.floor(Math.random() * 500);
-        //studentDatos.id = "student-number-" + idRandom
-        studentDatos.id = student.DNI
+        studentDatos.id = student[objectLength].dni
         var nombreApellido = document.createElement("h1");
-        nombreApellido.innerText = "Nombre: " + student[0].nombre //+ student.lastName
+        nombreApellido.innerText = "Nombre: " + student[objectLength].nombre //+ student.lastName
         studentDatos.appendChild(nombreApellido)
         var dni = document.createElement("h3");
-        dni.innerText = "DNI: " + student[0].dni
+        dni.innerText = "DNI: " + student[objectLength].dni
         studentDatos.appendChild(dni)
         //var email = document.createElement("p");
         //email.innerText = "Correo electrónico: " + student.email

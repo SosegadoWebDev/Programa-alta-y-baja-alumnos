@@ -25,27 +25,31 @@
                         <div class="col">
                             <input type="text" class="form-control" placeholder="Nombre" id="input-name">
                             <small class="form-text text-muted">Tu nombre debe ser mayor a 3 letras y no debe incluir
-                                números</small>
+                                números (*)</small>
                             <input type="number" class="form-control" placeholder="DNI" id="input-dni">
-                            <small class="form-text text-muted">Tu DNI debe contener entre 7-8 números y sin puntos</small>
+                            <small class="form-text text-muted">Tu DNI debe contener entre 7-8 números, sin
+                                puntos y no debe ser repetido(*)</small>
                         </div>
-                        <!--<div class="col">
-                            <input type="text" class="form-control" placeholder="Apellido">
-                            <input type="email" class="form-control" placeholder="e-mail">
-                        </div>-->
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Apellido" id="input-lastname">
+                            <small class="form-text text-muted">Tu nombre debe ser mayor a 3 letras y no debe incluir
+                                números (este campo es opcional)</small>
+                            <input type="email" class="form-control" placeholder="e-mail" id="input-password">
+                            <small class="form-text text-muted">Ingresa un correo electrónico (*)</small>
+                        </div>
                     </div>
                     <button type="button" class="btn btn-primary w-100" id="input-button1" disabled>Agregar
                         alumno</button>
-                    <!--<div class="row">
+                    <div class="row">
                         <div class="col">
-                            <input type="text" class="form-control" placeholder="Nombre">
-                            <input type="number" class="form-control" placeholder="DNI">
+                            <input type="text" class="form-control input-margin" placeholder="Nombre">
+                            <input type="number" class="form-control input-margin" placeholder="DNI">
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-danger w-100">Eliminar alumno</button>
-                            <button type="button" class="btn btn-success w-100">Buscar alumno</button>
+                            <button type="button" class="btn btn-danger w-100" disabled>Eliminar alumno</button>
+                            <button type="button" class="btn btn-success w-100" disabled>Buscar alumno</button>
                         </div>
-                    </div>-->
+                    </div>
                 </form>
             </div>
         </div>
