@@ -9,15 +9,15 @@ function mostrarStudent(student) {
             var studentDatos = document.createElement("li");
             studentDatos.className = "list-group-item";
             studentDatos.id = student[i].dni
-            var nombreApellido = document.createElement("h1");
-            nombreApellido.innerText = "Nombre: " + student[i].nombre //+ student.lastName
+            var nombreApellido = document.createElement("h2");
+            nombreApellido.innerText = "Nombre: " + student[i].nombre + " " + student[i].apellido
             studentDatos.appendChild(nombreApellido)
             var dni = document.createElement("h3");
             dni.innerText = "DNI: " + student[i].dni
             studentDatos.appendChild(dni)
-            //var email = document.createElement("p");
-            //email.innerText = "Correo electrónico: " + student.email
-            //studentDatos.appendChild(email)
+            var email = document.createElement("h4");
+            email.innerText = "Correo electrónico: " + student[i].email
+            studentDatos.appendChild(email)
             studentlist.appendChild(studentDatos)
         }
     }
@@ -133,11 +133,13 @@ document.querySelectorAll("input")[3].addEventListener("input", function activar
 inputbutton1.addEventListener("click", function () {
     var nameValue = document.querySelector("#input-name").value
     var dniValue = document.querySelector("#input-dni").value
+    var lastNameValue = document.querySelector("#input-lastname").value
+    var passwordValue = document.querySelector("#input-password").value
     studentObject = !(JSON.parse(localStorage.getItem("studentInfo"))) ? studentObject = [] : studentObject = JSON.parse(localStorage.getItem("studentInfo"))
     //Guardar el array en LocalStorage
     function guardarEnLocalStorage(key, array) {
         if (Array.isArray(array)) {
-            array.push({ nombre: nameValue, dni: dniValue })
+            array.push({ nombre: nameValue, dni: dniValue, apellido: lastNameValue, email: passwordValue })
             var listaStorage = JSON.stringify(array)
             localStorage.setItem(key, listaStorage)
         } else {
@@ -165,17 +167,35 @@ inputbutton1.addEventListener("click", function () {
         var studentDatos = document.createElement("li");
         studentDatos.className = "list-group-item"
         studentDatos.id = student[objectLength].dni
-        var nombreApellido = document.createElement("h1");
-        nombreApellido.innerText = "Nombre: " + student[objectLength].nombre //+ student.lastName
+        var nombreApellido = document.createElement("h2");
+        nombreApellido.innerText = "Nombre: " + student[objectLength].nombre + " " + ((student[objectLength].apellido == "") ? "" : student[objectLength].apellido)
         studentDatos.appendChild(nombreApellido)
         var dni = document.createElement("h3");
         dni.innerText = "DNI: " + student[objectLength].dni
         studentDatos.appendChild(dni)
-        //var email = document.createElement("p");
-        //email.innerText = "Correo electrónico: " + student.email
-        //studentDatos.appendChild(email)
+        var email = document.createElement("h4");
+        email.innerText = "Correo electrónico: " + student[objectLength].email
+        studentDatos.appendChild(email)
         studentlist.appendChild(studentDatos)
     }
     var studentNode = mostrarStudent(mostrarLocal)
     console.log(studentNode)
+    //Funcion para eliminar el contenido de los inputs al agregar un alumno
+    function refresh (){ 
+        var resetNombre = document.querySelectorAll("input")[0]
+        var resetDni = document.querySelectorAll("input")[1]
+        var resetApellido = document.querySelectorAll("input")[2]
+        var resetEmail = document.querySelectorAll("input")[3]
+        resetNombre.value = ""
+        resetDni.value = ""
+        resetApellido.value = ""
+        resetEmail.value = ""
+        resetNombre.classList.remove("is-valid")
+        resetDni.classList.remove("is-valid")
+        resetApellido.classList.remove("is-valid")
+        resetEmail.classList.remove("is-valid")
+        inputbutton1.disabled = true
+    }
+    var buttonRefresh = refresh()
+    console.log(buttonRefresh)
 })
