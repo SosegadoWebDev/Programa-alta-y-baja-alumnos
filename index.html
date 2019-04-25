@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <h2 class="text-content-center">Workshop</h2>
         <div class="row">
-            <div class="col">
+            <div class="col" id="div-list">
                 <h3 class="text-content-center">Lista de alumnos</h3>
                 <ul id="student-list"></ul>
             </div>
@@ -42,12 +42,12 @@
                         alumno</button>
                     <div class="row">
                         <div class="col">
-                            <input type="text" class="form-control input-margin" placeholder="Nombre">
+                            <input type="text" class="form-control input-margin" placeholder="Nombre" id="input-buscar">
                             <input type="number" class="form-control input-margin" placeholder="DNI">
                         </div>
                         <div class="col">
+                            <button type="button" class="btn btn-success w-100" id="input-name-finder">Buscar alumno</button>
                             <button type="button" class="btn btn-danger w-100" disabled>Eliminar alumno</button>
-                            <button type="button" class="btn btn-success w-100" disabled>Buscar alumno</button>
                         </div>
                     </div>
                 </form>

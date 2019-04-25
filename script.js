@@ -10,7 +10,7 @@ function mostrarStudent(student) {
             studentDatos.className = "list-group-item";
             studentDatos.id = student[i].dni
             var nombreApellido = document.createElement("h2");
-            nombreApellido.innerText = "Nombre: " + student[i].nombre + " " + student[i].apellido
+            nombreApellido.innerText = "Estudiante: " + student[i].nombre + " " + student[i].apellido
             studentDatos.appendChild(nombreApellido)
             var dni = document.createElement("h3");
             dni.innerText = "DNI: " + student[i].dni
@@ -181,7 +181,7 @@ inputbutton1.addEventListener("click", function () {
     var studentNode = mostrarStudent(mostrarLocal)
     console.log(studentNode)
     //Funcion para eliminar el contenido de los inputs al agregar un alumno
-    function refresh (){ 
+    function refresh() {
         var resetNombre = document.querySelectorAll("input")[0]
         var resetDni = document.querySelectorAll("input")[1]
         var resetApellido = document.querySelectorAll("input")[2]
@@ -198,4 +198,54 @@ inputbutton1.addEventListener("click", function () {
     }
     var buttonRefresh = refresh()
     console.log(buttonRefresh)
+})
+var inputBuscar = document.querySelector("#input-buscar")
+var inputButton2 = document.querySelector("#input-name-finder")
+var objectStudents = JSON.parse(localStorage.getItem("studentInfo"))
+inputButton2.addEventListener("click", function () {
+    function buscarAlumno(nameFinder, arrayStudent) {
+        if (objectStudents) {
+            for (var i = 0; i < arrayStudent.length; i++) {
+                if (arrayStudent[i].nombre == nameFinder) {
+                    var studentlist = document.querySelector("#student-list")
+                    studentlist.parentNode.removeChild(studentlist)
+                    function mostrarStudent(student) {
+                        studentlist = document.createElement("ul")
+                        studentlist.id = "student-list"
+                        var studentDatos = document.createElement("li");
+                        studentDatos.className = "list-group-item"
+                        studentDatos.id = student[i].dni
+                        var studentEncontrado = document.createElement("h2")
+                        studentEncontrado.className = "text-content-center"
+                        studentlist.appendChild(studentEncontrado)
+                        var nombreApellido = document.createElement("h2");
+                        nombreApellido.innerText = "Estudiante: " + student[i].nombre + " " + ((student[i].apellido == "") ? "" : student[i].apellido)
+                        studentDatos.appendChild(nombreApellido)
+                        var dni = document.createElement("h3");
+                        dni.innerText = "DNI: " + student[i].dni
+                        studentDatos.appendChild(dni)
+                        var email = document.createElement("h4");
+                        email.innerText = "Correo electrónico: " + student[i].email
+                        studentDatos.appendChild(email)
+                        studentlist.appendChild(studentDatos)
+                        document.querySelector("#div-list").appendChild(studentlist)
+                        studentEncontrado.innerText = "Alumnos encontrados: " + document.querySelectorAll("li").length
+                    }
+                    var studentNode = mostrarStudent(objectStudents)
+                    console.log(studentNode)
+                }
+            }
+        } else {
+            studentlist = document.createElement("ul")
+            studentlist.id = "student-list"
+            var studentDatos = document.createElement("li");
+            studentDatos.className = "list-group-item"
+            var alumnoNoFinded = document.createElement("h2");
+            alumnoNoFinded.innerText = "No hay alumnos que mostrar!"
+            studentDatos.appendChild(alumnoNoFinded)
+            studentlist.appendChild(studentDatos)
+            document.querySelector("#div-list").appendChild(studentlist)
+        }
+    }
+    buscarAlumno(inputBuscar.value, objectStudents)
 })
