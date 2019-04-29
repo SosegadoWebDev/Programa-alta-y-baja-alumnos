@@ -168,7 +168,7 @@ inputbutton1.addEventListener("click", function () {
         studentDatos.className = "list-group-item"
         studentDatos.id = student[objectLength].dni
         var nombreApellido = document.createElement("h2");
-        nombreApellido.innerText = "Nombre: " + student[objectLength].nombre + " " + ((student[objectLength].apellido == "") ? "" : student[objectLength].apellido)
+        nombreApellido.innerText = "Estudiante: " + student[objectLength].nombre + " " + ((student[objectLength].apellido == "") ? "" : student[objectLength].apellido)
         studentDatos.appendChild(nombreApellido)
         var dni = document.createElement("h3");
         dni.innerText = "DNI: " + student[objectLength].dni
@@ -201,40 +201,25 @@ inputbutton1.addEventListener("click", function () {
 })
 var inputBuscar = document.querySelector("#input-buscar")
 var inputButton2 = document.querySelector("#input-name-finder")
-var objectStudents = JSON.parse(localStorage.getItem("studentInfo"))
+
 inputButton2.addEventListener("click", function () {
-    function buscarAlumno(nameFinder, arrayStudent) {
+    var objectStudents = JSON.parse(localStorage.getItem("studentInfo"))
+    function buscarAlumno() {
         if (objectStudents) {
-            for (var i = 0; i < arrayStudent.length; i++) {
-                if (arrayStudent[i].nombre == nameFinder) {
-                    var studentlist = document.querySelector("#student-list")
-                    studentlist.parentNode.removeChild(studentlist)
-                    function mostrarStudent(student) {
-                        studentlist = document.createElement("ul")
-                        studentlist.id = "student-list"
-                        var studentDatos = document.createElement("li");
-                        studentDatos.className = "list-group-item"
-                        studentDatos.id = student[i].dni
-                        var studentEncontrado = document.createElement("h2")
-                        studentEncontrado.className = "text-content-center"
-                        studentlist.appendChild(studentEncontrado)
-                        var nombreApellido = document.createElement("h2");
-                        nombreApellido.innerText = "Estudiante: " + student[i].nombre + " " + ((student[i].apellido == "") ? "" : student[i].apellido)
-                        studentDatos.appendChild(nombreApellido)
-                        var dni = document.createElement("h3");
-                        dni.innerText = "DNI: " + student[i].dni
-                        studentDatos.appendChild(dni)
-                        var email = document.createElement("h4");
-                        email.innerText = "Correo electrónico: " + student[i].email
-                        studentDatos.appendChild(email)
-                        studentlist.appendChild(studentDatos)
-                        document.querySelector("#div-list").appendChild(studentlist)
-                        studentEncontrado.innerText = "Alumnos encontrados: " + document.querySelectorAll("li").length
+            function includesText(strParcial, strComplete) {
+                for (var ii = 0; ii < strComplete.length; ii++) {
+                    for (var i = 0; i < strParcial.length; i++) {
+                        if (strParcial[i] === strComplete[ii].nombre[i]) {
+                            if (strParcial[i] == strComplete[ii].nombre[strParcial.length - 1]) {
+                                console.log("Coincidencia")
+                            }
+                        } else {
+                            break
+                        }
                     }
-                    var studentNode = mostrarStudent(objectStudents)
-                    console.log(studentNode)
                 }
             }
+            console.log(includesText(inputBuscar.value, objectStudents))
         } else {
             studentlist = document.createElement("ul")
             studentlist.id = "student-list"
@@ -247,5 +232,5 @@ inputButton2.addEventListener("click", function () {
             document.querySelector("#div-list").appendChild(studentlist)
         }
     }
-    buscarAlumno(inputBuscar.value, objectStudents)
+    console.log(buscarAlumno())
 })
