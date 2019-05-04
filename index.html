@@ -16,7 +16,13 @@
         <div class="row">
             <div class="col" id="div-list">
                 <h3 class="text-content-center">Lista de alumnos</h3>
+                <div id="div-numberStudents">
+                    <h2 id="students-number" style="display: none"></h2>
+                </div>
                 <ul id="student-list"></ul>
+                <ul id="no-student-list"></ul>
+                <ul id="student-finded"></ul>
+
             </div>
             <div class="col">
                 <h3 class="text-content-center">Ingreso de datos</h3>
@@ -46,7 +52,8 @@
                             <input type="number" class="form-control input-margin" placeholder="DNI">
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-success w-100" id="input-name-finder">Buscar alumno</button>
+                            <button type="button" class="btn btn-success w-100" id="input-name-finder" disabled>Buscar
+                                alumno</button>
                             <button type="button" class="btn btn-danger w-100" disabled>Eliminar alumno</button>
                         </div>
                     </div>

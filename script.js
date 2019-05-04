@@ -139,6 +139,17 @@ inputbutton1.addEventListener("click", function () {
     //Guardar el array en LocalStorage
     function guardarEnLocalStorage(key, array) {
         if (Array.isArray(array)) {
+            nameValue = nameValue.toLowerCase()
+            lastNameValue = lastNameValue.toLowerCase()
+            function primeraLetraMayus(string) {
+                return string.charAt(0).toUpperCase() + string.slice(1)
+            }
+            function noSpaceLetter(string) {
+                var noSpaceLetter = string.indexOf(" ")
+                return string.charAt(0).toUpperCase() + string.slice(1, noSpaceLetter) + " " + string.charAt(noSpaceLetter + 1).toUpperCase() + string.slice(noSpaceLetter + 2)
+            }
+            nameValue = (nameValue.indexOf(" ") == -1) ? primeraLetraMayus(nameValue) : noSpaceLetter(nameValue);
+            lastNameValue = (lastNameValue.indexOf(" ") == -1) ? primeraLetraMayus(lastNameValue) : noSpaceLetter(lastNameValue)
             array.push({ nombre: nameValue, dni: dniValue, apellido: lastNameValue, email: passwordValue })
             var listaStorage = JSON.stringify(array)
             localStorage.setItem(key, listaStorage)
@@ -162,6 +173,8 @@ inputbutton1.addEventListener("click", function () {
     console.log(mostrarLocal)
     //Mostrar en el DOM los datos capturados desde LocalStorage
     function mostrarStudent(student) {
+        noStudentList = document.querySelector("#no-student-list")
+        noStudentList.innerText = ""
         var objectLength = JSON.parse(localStorage.getItem("studentInfo")).length - 1
         var studentlist = document.querySelector("#student-list");
         var studentDatos = document.createElement("li");
@@ -201,9 +214,39 @@ inputbutton1.addEventListener("click", function () {
 })
 var inputBuscar = document.querySelector("#input-buscar")
 var inputButton2 = document.querySelector("#input-name-finder")
-
+inputBuscar.addEventListener("input", function validarInputBuscar() {
+    if (inputBuscar.value && !(noNumberOnName(inputBuscar.value, numeros)) && inputBuscar.value.length >= 4) {
+        inputBuscar.classList.add("is-valid")
+        inputButton2.disabled = false
+        if (inputBuscar.classList.contains("is-invalid")) {
+            inputBuscar.classList.replace("is-invalid", "is-valid")
+        }
+    } else {
+        inputBuscar.classList.add("is-invalid")
+        inputButton2.disabled = true
+        if (inputBuscar.classList.contains("is-valid")) {
+            inputBuscar.classList.replace("is-valid", "is-invalid")
+        }
+    }
+})
+inputBuscar.addEventListener("blur", function(){
+    if (inputBuscar.classList.contains("is-valid")) {
+        inputBuscar.classList.remove("is-valid")
+    } else if (inputBuscar.classList.contains("is-invalid")) {
+        inputBuscar.classList.remove("is-invalid")
+    }
+})
+function primeraLetraMayus(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+}
+function noSpaceLetter(string) {
+    var noSpaceLetter = string.indexOf(" ")
+    return string.charAt(0).toUpperCase() + string.slice(1, noSpaceLetter) + " " + string.charAt(noSpaceLetter + 1).toUpperCase() + string.slice(noSpaceLetter + 2)
+}
 inputButton2.addEventListener("click", function () {
-    var objectStudents = JSON.parse(localStorage.getItem("studentInfo"))
+    inputBuscar = inputBuscar.value.toLowerCase();
+    inputBuscar = (inputBuscar.indexOf(" ") == -1) ? primeraLetraMayus(inputBuscar) : noSpaceLetter(inputBuscar);
+    var objectStudents = JSON.parse(localStorage.getItem("studentInfo"));
     function buscarAlumno() {
         if (objectStudents) {
             function includesText(strParcial, strComplete) {
@@ -211,25 +254,48 @@ inputButton2.addEventListener("click", function () {
                     for (var i = 0; i < strParcial.length; i++) {
                         if (strParcial[i] === strComplete[ii].nombre[i]) {
                             if (strParcial[i] == strComplete[ii].nombre[strParcial.length - 1]) {
-                                console.log("Coincidencia")
+                                function mostrarStudent(student) {
+                                    var studentlist = document.querySelector("#student-list");
+                                    studentlist.innerText = ""
+                                    var studentFinder = document.querySelector("#student-finded")
+                                    var studentDatos = document.createElement("li");
+                                    studentDatos.className = "list-group-item"
+                                    studentDatos.id = student[ii].dni
+                                    var nombreApellido = document.createElement("h2");
+                                    nombreApellido.innerText = "Estudiante: " + student[ii].nombre + " " + ((student[ii].apellido == "") ? "" : student[ii].apellido)
+                                    studentDatos.appendChild(nombreApellido)
+                                    var dni = document.createElement("h3");
+                                    dni.innerText = "DNI: " + student[ii].dni
+                                    studentDatos.appendChild(dni)
+                                    var email = document.createElement("h4");
+                                    email.innerText = "Correo electrónico: " + student[ii].email
+                                    studentDatos.appendChild(email)
+                                    studentFinder.appendChild(studentDatos)
+                                    inputButton2.disabled = true
+                                }
+                                var studentNode = mostrarStudent(objectStudents)
+                                console.log(studentNode)
                             }
                         } else {
                             break
                         }
                     }
                 }
+                var divStudentsNumber = document.querySelector("#div-numberStudents")
+                var studentEncontrado = document.querySelector("#students-number")
+                studentEncontrado.className = "text-content-center show"
+                studentEncontrado.innerText = "Alumnos encontrados: " + document.querySelectorAll("li").length
+                divStudentsNumber.appendChild(studentEncontrado)
             }
-            console.log(includesText(inputBuscar.value, objectStudents))
+            console.log(includesText(inputBuscar, objectStudents))
         } else {
-            studentlist = document.createElement("ul")
-            studentlist.id = "student-list"
+            noStudentList = document.querySelector("#no-student-list")
             var studentDatos = document.createElement("li");
             studentDatos.className = "list-group-item"
             var alumnoNoFinded = document.createElement("h2");
             alumnoNoFinded.innerText = "No hay alumnos que mostrar!"
             studentDatos.appendChild(alumnoNoFinded)
-            studentlist.appendChild(studentDatos)
-            document.querySelector("#div-list").appendChild(studentlist)
+            noStudentList.appendChild(studentDatos)
         }
     }
     console.log(buscarAlumno())

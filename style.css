@@ -1,6 +1,9 @@
 .text-content-center {
     text-align: center;
 }
+.show {
+    display: block !important;
+}
 small {
     margin-bottom: 12px !important;
 }
