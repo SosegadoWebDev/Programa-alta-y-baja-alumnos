@@ -214,8 +214,9 @@ inputbutton1.addEventListener("click", function () {
 })
 var inputBuscar = document.querySelector("#input-buscar")
 var inputButton2 = document.querySelector("#input-name-finder")
+//Validación del input nombre para buscar alumno
 inputBuscar.addEventListener("input", function validarInputBuscar() {
-    if (inputBuscar.value && !(noNumberOnName(inputBuscar.value, numeros)) && inputBuscar.value.length >= 4) {
+    if (inputBuscar.value && !(noNumberOnName(inputBuscar.value, numeros))) {
         inputBuscar.classList.add("is-valid")
         inputButton2.disabled = false
         if (inputBuscar.classList.contains("is-invalid")) {
@@ -236,6 +237,7 @@ inputBuscar.addEventListener("blur", function(){
         inputBuscar.classList.remove("is-invalid")
     }
 })
+//Funciones para cambiar primeras letras a mayúsculas en string sin " " y con " " (espacios vacíos)
 function primeraLetraMayus(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -243,6 +245,7 @@ function noSpaceLetter(string) {
     var noSpaceLetter = string.indexOf(" ")
     return string.charAt(0).toUpperCase() + string.slice(1, noSpaceLetter) + " " + string.charAt(noSpaceLetter + 1).toUpperCase() + string.slice(noSpaceLetter + 2)
 }
+//Función para buscar alumno por nombre parcial o completo
 inputButton2.addEventListener("click", function () {
     inputBuscar = inputBuscar.value.toLowerCase();
     inputBuscar = (inputBuscar.indexOf(" ") == -1) ? primeraLetraMayus(inputBuscar) : noSpaceLetter(inputBuscar);
@@ -299,4 +302,58 @@ inputButton2.addEventListener("click", function () {
         }
     }
     console.log(buscarAlumno())
+})
+//Función para validar la eliminación del alumno por dni
+var deleteStudent = document.querySelector("#input-delete-dni")
+var inputButton3 = document.querySelector("#input-delete-student")
+function dniExistente() {
+    for (var i = 0; i <= document.querySelectorAll("li").length - 1; i++) {
+        if (deleteStudent.value == document.querySelectorAll("li")[i].id) {
+            return true
+        }
+    }
+    return false
+}
+deleteStudent.addEventListener("input", function(){
+    if (dniExistente()) {
+        deleteStudent.classList.add("is-valid")
+        inputButton3.disabled = false
+        if (deleteStudent.classList.contains("is-invalid")) {
+            deleteStudent.classList.replace("is-invalid", "is-valid")
+        }
+    } else {
+        deleteStudent.classList.add("is-invalid")
+        inputButton3.disabled = true
+        if (deleteStudent.classList.contains("is-valid")) {
+            deleteStudent.classList.replace("is-valid", "is-invalid")
+        }
+    }
+})
+deleteStudent.addEventListener("blur", function(){
+    if (deleteStudent.classList.contains("is-valid")) {
+        deleteStudent.classList.remove("is-valid")
+    } else if (deleteStudent.classList.contains("is-invalid")) {
+        deleteStudent.classList.remove("is-invalid")
+    }
+})
+//Función para eliminar alumno por DNI
+inputButton3.addEventListener("click", function(){
+    var objectStudents = JSON.parse(localStorage.getItem("studentInfo"));
+    for (var i = 0; i < objectStudents.length; i++) {
+        if (deleteStudent.value == objectStudents[i].dni) {
+            objectStudents.splice(i)
+            var newStorage = JSON.stringify(objectStudents)
+            localStorage.setItem("studentInfo", newStorage)
+        }
+    }
+})
+//Función que refresca la página
+var buttonRefresh = document.querySelector("#button-refresh")
+buttonRefresh.addEventListener("click", function (){
+    location.reload()
+})
+//Función para remover todo del localStorage
+var buttonRemoveStorage = document.querySelector("#button-remove-storage")
+buttonRemoveStorage.addEventListener("click", function(){
+    localStorage.removeItem("studentInfo")
 })

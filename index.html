@@ -49,14 +49,16 @@
                     <div class="row">
                         <div class="col">
                             <input type="text" class="form-control input-margin" placeholder="Nombre" id="input-buscar">
-                            <input type="number" class="form-control input-margin" placeholder="DNI">
+                            <input type="number" class="form-control input-margin" id="input-delete-dni" placeholder="DNI">
                         </div>
                         <div class="col">
                             <button type="button" class="btn btn-success w-100" id="input-name-finder" disabled>Buscar
                                 alumno</button>
-                            <button type="button" class="btn btn-danger w-100" disabled>Eliminar alumno</button>
+                            <button type="button" class="btn btn-danger w-100" id="input-delete-student" disabled>Eliminar alumno</button>
                         </div>
                     </div>
+                    <button type="button" class="btn btn-outline-dark w-100" id="button-refresh">Refrescar la página</button>
+                    <button type="button" class="btn btn-outline-dark w-100" id="button-remove-storage">Limpiar Storage</button>
                 </form>
             </div>
         </div>
